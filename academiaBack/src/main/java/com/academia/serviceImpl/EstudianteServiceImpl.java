@@ -22,11 +22,6 @@ public class EstudianteServiceImpl extends CRUDImpl<EstudianteEntity, Integer> i
 
     @Override
     public List<EstudianteEntity> listarestudiantesPorMaestro(int id) {
-        List<EstudianteEntity> entities = repository.listarestudiantesPorMaestro(id);
-
-        if (entities == null) {
-            return null;
-        }
-        return entities;
+        return repository.listarestudiantesPorMaestro(id);
     }
 }

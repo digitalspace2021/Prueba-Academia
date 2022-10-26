@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IEstudianteRepository extends IGenericRepository<EstudianteEntity, Integer>{
 
-    @Query("SELECT e FROM EstudianteEntity e INNER JOIN MaestroEntity m ON e.id = m.estudiante.id " +
-            "WHERE m.id = :id")
+    @Query("SELECT e FROM EstudianteEntity e INNER JOIN AsignacionEntity a ON e.id = a.estudiante.id " +
+            "WHERE a.maestro.id = :id")
     List<EstudianteEntity> listarestudiantesPorMaestro(int id);
 }

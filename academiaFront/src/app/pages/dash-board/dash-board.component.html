@@ -9,7 +9,7 @@
     <mat-form-field class="margin">
       <mat-label>Maestro</mat-label>
       <mat-select formControlName="maestro">
-        <mat-option *ngFor="let item of maestros" [value]="item">
+        <mat-option *ngFor="let item of maestros" [value]="item.id">
           {{item.nombre}} {{item.apellido}}
         </mat-option>
       </mat-select>

@@ -1,8 +1,7 @@
 package com.academia.controller;
 
 import com.academia.entity.EstudianteEntity;
-import com.academia.service.IEstudianteService;
-import com.cam.api.talleres.exeption.ModeloNotFoundException;
+import com.academia.repository.IEstudianteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,16 +17,13 @@ import java.util.List;
 public class EstudianteController extends CRUDControllerImpl<EstudianteEntity, Integer>{
 
     @Autowired
-    private IEstudianteService service;
+    private IEstudianteRepository service;
 
     @GetMapping("/buscar/{id}")
     public ResponseEntity<List<EstudianteEntity>> listarestudiantesPorMaestro(@PathVariable int id) throws Exception {
 
         List<EstudianteEntity> entities = service.listarestudiantesPorMaestro(id);
 
-        if(entities == null){
-            throw new ModeloNotFoundException("El MAESTRO NO TIENE ESTUDIANTES ASIGNADOS");
-        }
         return new ResponseEntity<List<EstudianteEntity>>(entities, HttpStatus.OK);
     }
 }

@@ -1,3 +1,5 @@
+import { AsignacionService } from './../../_service/asignacion.service';
+import { Asignacion } from './../../_model/asignacion';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Maestro } from './../../_model/maestro';
 import { Estudiante } from './../../_model/estudiante';
@@ -37,13 +39,14 @@ export class DashBoardComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _estudianteService: EstudianteService,
     private _maestroService: MaestroService,
+    private _asignacionService: AsignacionService
   ) { }
 
   ngOnInit(): void {
     this.initForm();
     this.listarMaestros();
     this.listarEstudiantes();
-    this.crearTabla();
+    this.actualizarSelect();
   }
 
   initForm() {
@@ -65,7 +68,7 @@ export class DashBoardComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(res => {
       if (res == true) {
-        this.crearTabla();
+        this.actualizarSelect();
       }
     });
   }
@@ -77,7 +80,7 @@ export class DashBoardComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(res => {
       if (res == true) {
-        this.crearTabla();
+        this.actualizarSelect();
       }
     });
   }
@@ -99,13 +102,16 @@ export class DashBoardComponent implements OnInit {
     estudiante.id = this.estudiante.value;
 
     let maestro = new Maestro();
-    let maestroForm: Maestro = this.maestro.value;
-    //maestro.id = maestroForm.id
-    maestro.nombre = maestroForm.nombre
-    maestro.apellido = maestroForm.apellido
-    maestro.estudiante = estudiante
+    maestro.id = this.maestro.value;
 
-    this._maestroService.guardar(maestro).subscribe(() => { this.crearTabla() });
+    let asignacion = new Asignacion();
+    asignacion.estudiante = estudiante;
+    asignacion.maestro = maestro;
+
+    this._asignacionService.guardar(asignacion).subscribe(() => {
+      this.actualizarSelect();
+      this.formAsignacion.reset();
+    });
   }
 
   buscar() {
@@ -113,16 +119,13 @@ export class DashBoardComponent implements OnInit {
 
     let idMaestro = this.maestroSelect.value;
     this._estudianteService.listarestudiantesPorMaestro(idMaestro).subscribe(data => {
-      console.log(data);
-      this.dataSource = new MatTableDataSource(data)
+      this.formMaestro.reset();
+      this.dataSource = new MatTableDataSource(data);
     });
   }
 
-  crearTabla() {
-    this._maestroService.listar().subscribe(data => {
-      this.maestros = data;
-    });
-
+  actualizarSelect() {
+    this._maestroService.listar().subscribe(data => { this.maestros = data });
     this._estudianteService.listar().subscribe(data => { this.estudiantes = data });
   }
 
