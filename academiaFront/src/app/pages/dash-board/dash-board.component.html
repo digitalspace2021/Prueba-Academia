@@ -1,0 +1,58 @@
+<div fxLayout="row" fxLayoutAlign="space-around center" >
+  <button mat-raised-button color="primary" (click)="abrirDialogEstudiante()">Agregar Estudiante</button>
+  <button mat-raised-button color="primary" (click)="abrirDialogMaestro()">Agregar Maestro</button>
+</div>
+
+<mat-card>
+  <form [formGroup]="formAsignacion">
+
+    <mat-form-field class="margin">
+      <mat-label>Maestro</mat-label>
+      <mat-select formControlName="maestro">
+        <mat-option *ngFor="let item of maestros" [value]="item">
+          {{item.nombre}} {{item.apellido}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="margin">
+      <mat-label>Estudiante</mat-label>
+      <mat-select formControlName="estudiante">
+        <mat-option *ngFor="let item of estudiantes" [value]="item.id">
+          {{item.nombre}} {{item.apellido}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="agregar()" [disabled]="formAsignacion.invalid">Agregar Estudiante Al Maestro</button>
+
+  </form>
+
+  <form [formGroup]="formMaestro">
+
+    <mat-form-field class="margin">
+      <mat-label>Maestro</mat-label>
+      <mat-select formControlName="maestroSelect">
+        <mat-option *ngFor="let item of maestros" [value]="item.id">
+          {{item.nombre}} {{item.apellido}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="buscar()" [disabled]="formMaestro.invalid">Buscar Estudiantes Del Maestro</button>
+
+  </form>
+
+  <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+    <ng-container matColumnDef="estudiante">
+      <mat-header-cell mat-header-cell *matHeaderCellDef class="footer-table"> Estudiante </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.nombre}} {{element.apellido}}</mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row matRipple *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+  </mat-table>
+
+</mat-card>
